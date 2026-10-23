@@ -1,0 +1,30 @@
+{
+  "schema_version": "tp3.release_manifest.v1",
+  "generated_at": "2026-10-23T13:07:47.595227+00:00",
+  "git_revision": "unknown",
+  "model": {
+    "name": "predictive-maintenance",
+    "alias": "champion",
+    "version": "3",
+    "run_id": "3a93481aaaa543dab089e7da1d5cde3c",
+    "data_sha256": "5598644bc8721601c7855bea95fba27b41e2edfb4cf57f497e93b1d49cf08cfa",
+    "quality_gate": "ACCEPT",
+    "source_registration_version": "4",
+    "metrics": {
+      "accuracy": 0.9616,
+      "precision": 0.7894736842105263,
+      "recall": 0.6521739130434783,
+      "f1": 0.7142857142857143,
+      "latency_ms": 0.008928279199972166
+    }
+  },
+  "image": {
+    "name": "maintenance-ml:tp3",
+    "id": null
+  },
+  "decisions": {
+    "selected_candidate": "3",
+    "promotion": "KEEP_CHAMPION",
+    "rollback": "ROLLBACK"
+  }
+}

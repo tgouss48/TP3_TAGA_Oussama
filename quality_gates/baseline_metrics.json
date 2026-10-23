@@ -1,0 +1,8 @@
+{
+  "accuracy": 0.9704,
+  "precision": 0.76,
+  "recall": 0.38,
+  "f1": 0.5066666667,
+  "latency_ms": 20.0,
+  "model_version": "tp1-reference"
+}

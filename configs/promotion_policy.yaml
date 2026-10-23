@@ -1,0 +1,17 @@
+model_name: predictive-maintenance
+
+aliases:
+  challenger: challenger
+  champion: champion
+
+eligibility:
+  min_f1: 0.64
+  min_recall: 0.60
+  max_latency_ms: 50
+  require_quality_gate: true
+
+ranking_metric: f1
+
+promotion:
+  minimum_f1_gain: 0.01
+  minimum_recall_gain: -0.01

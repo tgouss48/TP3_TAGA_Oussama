@@ -1,0 +1,6 @@
+model_name: predictive-maintenance
+model_alias: champion
+tracking_uri: http://127.0.0.1:5000
+model_source: registry
+port: 8000
+cors_allowed_origins: []

@@ -1,0 +1,17 @@
+.git
+.venv
+.pytest_cache
+.ruff_cache
+__pycache__
+*.pyc
+.env*
+*.log
+*.sqlite
+mlflow.db
+mlartifacts
+mlruns
+data/processed
+reports/figures
+reports/test_report.xml
+*.zip
+.github

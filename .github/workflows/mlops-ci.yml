@@ -1,0 +1,82 @@
+name: MLOps TP3 CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.11.6"
+
+      - name: Synchroniser les dépendances verrouillées
+        run: uv sync --locked
+
+      - name: Vérifier l'export runtime depuis le lockfile
+        run: |
+          uv export --locked --no-dev --no-hashes --no-header --no-emit-project --output-file /tmp/tp3-requirements.txt
+          cmp --silent /tmp/tp3-requirements.txt requirements.txt
+
+      - name: Vérifier le style
+        run: uv run --locked ruff check .
+
+      - name: Auditer les dépendances runtime
+        run: make security-audit
+
+      - name: Générer et vérifier le contrat OpenAPI
+        run: |
+          make openapi
+          git diff --exit-code -- contracts/openapi.json
+
+      - name: Exécuter les tests
+        run: |
+          mkdir -p reports
+          PYTHONPATH=. uv run --locked python -m pytest -q --junitxml=reports/test_report.xml
+
+      - name: Publier le rapport JUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tp3-test-report
+          path: reports/test_report.xml
+          if-no-files-found: ignore
+
+      - name: Générer le checkpoint de référence
+        run: PYTHONPATH=. uv run --locked python scripts/bootstrap_reference.py
+
+      - name: Vérifier le contrat TP2
+        run: make validate-tp2
+
+      - name: Construire l'image OCI
+        run: docker build --build-arg VCS_REF=${{ github.sha }} --tag maintenance-ml:${{ github.sha }} .
+
+      - name: Préparer le tag utilisé par le smoke test
+        run: |
+          docker tag maintenance-ml:${{ github.sha }} maintenance-ml:tp3
+
+      - name: Démarrer le conteneur et smoke test HTTP
+        run: make docker-smoke
+
+      - name: Afficher les logs du conteneur
+        if: always()
+        run: docker logs maintenance-ml-tp3 || true
+
+      - name: Nettoyer le conteneur
+        if: always()
+        run: docker rm --force maintenance-ml-tp3 || true

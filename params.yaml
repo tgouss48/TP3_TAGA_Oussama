@@ -1,0 +1,13 @@
+seed: 42
+test_size: 0.25
+
+model:
+  C: 0.5
+  max_iter: 1000
+
+quality:
+  min_accuracy: 0.88
+  min_recall: 0.60
+  min_f1: 0.64
+  max_f1_regression: 0.02
+  max_recall_regression: 0.03

@@ -1,0 +1,3 @@
+tracking_uri: http://127.0.0.1:5000
+experiment_name: tp3-predictive-maintenance
+registered_model_name: predictive-maintenance
