@@ -146,6 +146,3 @@ def test_cors_origins_are_explicitly_configurable(monkeypatch):
         "http://localhost:3000",
         "http://localhost:4173",
     ]
-
-def test_echec_controle():
-    assert 1 == 2
